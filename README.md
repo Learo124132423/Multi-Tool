@@ -88,6 +88,29 @@ npm run release
 
 (`gh auth login` or a `GH_TOKEN` environment variable is required for GitHub publishing.)
 
+### After publishing
+
+Check the release on GitHub and fix these two things if needed:
+
+1. The release must not be a **draft**. With both the `nsis` and `portable` targets, electron-builder
+   can create one draft per target and leave them unpublished. Publish the one that contains
+   `latest.yml` and delete the other.
+2. `latest.yml` must be attached to the published release. Installed copies download it to look for
+   updates, so a release without it is invisible to auto-update.
+
+Verify the public update feed:
+
+```
+https://github.com/Learo124132423/Multi-Tool/releases/latest/download/latest.yml
+```
+
+### If the GitHub Actions workflow stays queued
+
+The `Release` workflow needs a hosted runner. When GitHub Actions is degraded or the account has no
+runner capacity available, the job stays in `queued` and never starts, so the release is never
+created. Check <https://www.githubstatus.com/> and publish from your own machine with
+`npm run release` in the meantime.
+
 ## Project layout
 
 ```
