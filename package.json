@@ -1,0 +1,72 @@
+{
+  "name": "multi-tool_app",
+  "version": "1.0.0",
+  "description": "Personal multi-tool desktop app",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "setup": "node scripts/setup.js",
+    "dist": "npm run setup && electron-builder",
+    "dist:fast": "electron-builder",
+    "release": "npm run setup && electron-builder --publish always",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "keywords": [],
+  "author": "Paulino",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Learo124132423/Multi-Tool.git"
+  },
+  "type": "commonjs",
+  "devDependencies": {
+    "electron": "^44.7.0",
+    "electron-builder": "^26.15.3"
+  },
+  "dependencies": {
+    "axios": "^1.20.0",
+    "electron-updater": "^6.8.9",
+    "mathjs": "^15.2.0",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^6.4.299",
+    "qrcode": "^1.5.4",
+    "sharp": "^0.35.5",
+    "tesseract.js": "^7.0.0"
+  },
+  "build": {
+    "appId": "com.paulino.multitool",
+    "productName": "Multi-Tool",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**/*",
+      "resources/bin/yt-dlp.exe",
+      "resources/tessdata/**/*"
+    ],
+    "asarUnpack": [
+      "node_modules/**/*",
+      "resources/bin/**/*",
+      "resources/tessdata/**/*"
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "Learo124132423",
+        "repo": "Multi-Tool"
+      }
+    ]
+  }
+}

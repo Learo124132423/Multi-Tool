@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Tool App</title>
+    <link rel="stylesheet" href="styles/base.css">
+</head>
+<body class="dark-theme">
+    <div class="app">
+        <!-- Top Bar -->
+        <header class="topbar">
+            <button class="back-btn" id="back-btn" style="display:none"><span class="back-icon" data-icon="back"></span></button>
+            <div class="brand" id="brand">
+                <span class="logo-icon" data-icon="brand"></span>
+                <span class="brand-text">Multi-Tool</span>
+            </div>
+            <h2 id="tool-title">All Tools</h2>
+        </header>
+
+        <main class="main">
+            <!-- Menu View -->
+            <section id="menu-view" class="menu-view active">
+                <div class="menu-grid">
+                    <div class="tool-card" data-tool="downloader">
+                        <span class="card-icon" data-icon="downloader"></span>
+                        <span class="card-name">Downloader</span>
+                    </div>
+                    <div class="tool-card" data-tool="calculator">
+                        <span class="card-icon" data-icon="calculator"></span>
+                        <span class="card-name">Calculator</span>
+                    </div>
+                    <div class="tool-card" data-tool="qr">
+                        <span class="card-icon" data-icon="qr"></span>
+                        <span class="card-name">QR Code</span>
+                    </div>
+                    <div class="tool-card" data-tool="converter">
+                        <span class="card-icon" data-icon="converter"></span>
+                        <span class="card-name">Unit & Currency</span>
+                    </div>
+                    <div class="tool-card" data-tool="media">
+                        <span class="card-icon" data-icon="image"></span>
+                        <span class="card-name">Media Converter</span>
+                    </div>
+                    <div class="tool-card" data-tool="editor">
+                        <span class="card-icon" data-icon="editor"></span>
+                        <span class="card-name">Picture Editor</span>
+                    </div>
+                    <div class="tool-card" data-tool="color">
+                        <span class="card-icon" data-icon="color"></span>
+                        <span class="card-name">Color Tools</span>
+                    </div>
+                    <div class="tool-card" data-tool="thumbnail">
+                        <span class="card-icon" data-icon="thumbnail"></span>
+                        <span class="card-name">Thumbnail Grabber</span>
+                    </div>
+                    <div class="tool-card" data-tool="ocr">
+                        <span class="card-icon" data-icon="ocr"></span>
+                        <span class="card-name">OCR</span>
+                    </div>
+                    <div class="tool-card" data-tool="pdf">
+                        <span class="card-icon" data-icon="pdf"></span>
+                        <span class="card-name">PDF Toolkit</span>
+                    </div>
+                    <div class="tool-card" data-tool="gif">
+                        <span class="card-icon" data-icon="gif"></span>
+                        <span class="card-name">GIF Creator</span>
+                    </div>
+                    <div class="tool-card" data-tool="settings">
+                        <span class="card-icon" data-icon="settings"></span>
+                        <span class="card-name">Settings</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tool Panels -->
+            <div id="tool-panels">
+                <!-- Downloader Panel -->
+                <section id="panel-downloader" class="tool-panel">
+                    <div class="field-row">
+                        <label>Link</label>
+                        <div class="input-with-clear">
+                            <input type="text" id="dl-url" placeholder="Paste a video or Spotify link...">
+                            <button type="button" class="clear-btn" data-clear="dl-url" title="Clear link" aria-label="Clear link">×</button>
+                        </div>
+                    </div>
+                    <div class="field-row">
+                        <label>File name</label>
+                        <div class="input-with-clear">
+                            <input type="text" id="dl-filename" placeholder="Leave blank to keep the original title">
+                            <button type="button" class="clear-btn" data-clear="dl-filename" title="Clear file name" aria-label="Clear file name">×</button>
+                        </div>
+                    </div>
+                    <div class="field-row">
+                        <label>Format</label>
+                        <select id="dl-format">
+                            <option value="mp4">MP4 Video</option>
+                            <option value="mp3">MP3 Audio</option>
+                        </select>
+                    </div>
+                    <div class="field-row folder-row">
+                        <label>Save to</label>
+                        <span class="folder-path" id="dl-folder">...</span>
+                        <button class="btn-small" id="dl-folder-btn">Change</button>
+                    </div>
+                    <div class="field-row">
+                        <button id="dl-download-btn">Download</button>
+                    </div>
+                    <div class="progress-container" id="dl-progress-box" style="display:none">
+                        <div class="progress-bar"><div class="progress-fill" id="dl-progress-fill"></div></div>
+                        <div class="loader" id="dl-loader" style="display:none"></div>
+                        <p id="dl-status">Starting...</p>
+                        <p class="media-status-detail" id="dl-error-hint" style="display:none"></p>
+                        <div class="save-result" id="dl-save-result" style="display:none">
+                            <span class="save-result-path" id="dl-save-path"></span>
+                            <button type="button" class="btn-small" id="dl-reveal-btn">Show in folder</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Calculator Panel -->
+                <section id="panel-calculator" class="tool-panel">
+                    <div class="calc-container">
+                        <div class="calc-toolbar">
+                            <button type="button" class="calc-chip" id="calc-angle" title="Toggle degrees/radians">RAD</button>
+                            <button type="button" class="calc-chip" id="calc-sci-toggle" title="Scientific functions">fx</button>
+                            <button type="button" class="calc-chip" id="calc-history-toggle" title="History">History</button>
+                            <button type="button" class="calc-chip" id="calc-copy" title="Copy result">Copy</button>
+                        </div>
+
+                        <div class="calc-display-wrap">
+                            <span class="calc-memory-indicator" id="calc-memory-indicator">M</span>
+                            <input type="text" id="calc-display" autocomplete="off" spellcheck="false" placeholder="0">
+                            <div class="calc-preview" id="calc-preview"></div>
+                        </div>
+
+                        <div class="calc-memory-row">
+                            <button type="button" data-calc-memory="mc">MC</button>
+                            <button type="button" data-calc-memory="mr">MR</button>
+                            <button type="button" data-calc-memory="mplus">M+</button>
+                            <button type="button" data-calc-memory="mminus">M−</button>
+                        </div>
+
+                        <div class="calc-sci-panel" id="calc-sci-panel">
+                            <div class="calc-sci-grid" id="calc-sci-grid"></div>
+                        </div>
+
+                        <div class="calc-keypad" id="calc-keypad"></div>
+
+                        <div class="calc-history" id="calc-history">
+                            <div class="calc-history-head">
+                                <span>History</span>
+                                <button type="button" class="btn-small" id="calc-history-clear">Clear</button>
+                            </div>
+                            <div class="calc-history-list" id="calc-history-list"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- QR Code Panel -->
+                <section id="panel-qr" class="tool-panel">
+                    <div class="tool-container">
+                        <div class="textarea-with-clear">
+                            <textarea id="qr-text" placeholder="Enter text or URL..."></textarea>
+                            <button type="button" class="clear-btn" data-clear="qr-text" title="Clear text" aria-label="Clear text">×</button>
+                        </div>
+                        <div class="field-row">
+                            <label>Size</label>
+                            <select id="qr-size">
+                                <option value="256">256 × 256</option>
+                                <option value="512" selected>512 × 512</option>
+                                <option value="1024">1024 × 1024</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <button id="qr-generate-btn">Generate QR</button>
+                            <button id="qr-download-btn" class="btn-small" style="display:none">Save PNG</button>
+                            <button id="qr-reveal-btn" class="btn-small" style="display:none">Show in folder</button>
+                        </div>
+                        <div id="qr-result"></div>
+                    </div>
+                </section>
+
+<!-- Converter Panel (Units & Currency) -->
+                <section id="panel-converter" class="tool-panel">
+                    <div class="tool-container converter-container">
+                        <div class="field-row">
+                            <label>Category</label>
+                            <select id="conv-category">
+                                <option value="length">Length</option>
+                                <option value="weight">Weight</option>
+                                <option value="temperature">Temperature</option>
+                                <option value="currency">Currency</option>
+                            </select>
+                        </div>
+                        <div class="field-row">
+                            <label>Amount</label>
+                            <input type="number" id="conv-amount" value="1" step="any">
+                        </div>
+                        <div class="field-row converter-pair-row">
+                            <div class="combo" id="conv-from-combo">
+                                <input type="text" id="conv-from" class="combo-input" placeholder="From" autocomplete="off" spellcheck="false">
+                                <button type="button" class="combo-toggle" title="Show options" aria-label="Show from options">▾</button>
+                                <div class="combo-list" id="conv-from-list" role="listbox"></div>
+                            </div>
+                            <button type="button" class="btn-small" id="conv-swap-btn" title="Swap units">⇄</button>
+                            <div class="combo" id="conv-to-combo">
+                                <input type="text" id="conv-to" class="combo-input" placeholder="To" autocomplete="off" spellcheck="false">
+                                <button type="button" class="combo-toggle" title="Show options" aria-label="Show to options">▾</button>
+                                <div class="combo-list" id="conv-to-list" role="listbox"></div>
+                            </div>
+                        </div>
+                        <div class="field-row">
+                            <button id="conv-btn" style="flex:1">Convert</button>
+                            <button class="btn-small" id="conv-refresh-btn" title="Refresh exchange rates" style="display:none">↻</button>
+                        </div>
+                        <div class="result-box">
+                            <h3 id="conv-result">-</h3>
+                        </div>
+                        <p id="conv-status" class="converter-status"></p>
+                    </div>
+                </section>
+
+                <!-- Media Converter Panel -->
+                <section id="panel-media" class="tool-panel">
+                    <div class="tool-container">
+                        <div class="drop-zone" id="media-drop-zone">
+                            <p>Drag &amp; Drop an image, audio, or video here or click to select</p>
+                            <input type="file" id="media-input" hidden accept="image/*,audio/*,video/*,.mkv,.avi,.mov,.webm">
+                        </div>
+                        <div id="media-actions" style="display:none">
+                            <p id="media-file-name" class="media-file-name"></p>
+                            <div id="media-preview" class="media-preview"></div>
+                            <div class="input-group">
+                                <select id="media-action"></select>
+                                <button id="media-convert-btn">Convert</button>
+                            </div>
+                        </div>
+                        <div class="media-status" id="media-status" style="display:none">
+                            <div class="media-status-head">
+                                <div class="loader" id="media-loader"></div>
+                                <div class="media-status-copy">
+                                    <p id="media-status-text">Converting...</p>
+                                    <p class="media-status-detail" id="media-status-detail"></p>
+                                </div>
+                            </div>
+                            <div class="progress-bar" id="media-progress-bar">
+                                <div class="progress-fill" id="media-progress-fill"></div>
+                            </div>
+                            <div class="save-result" id="media-save-result" style="display:none">
+                                <span class="save-result-path" id="media-save-path"></span>
+                                <button type="button" class="btn-small" id="media-reveal-btn">Show in folder</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Picture Editor Panel -->
+                <section id="panel-editor" class="tool-panel">
+                    <div class="tool-container editor-container">
+                        <div class="drop-zone" id="editor-drop-zone">
+                            <p>Drag &amp; Drop an image here or click to select (PNG, JPG, WebP)</p>
+                            <input type="file" id="editor-input" hidden accept="image/png,image/jpeg,image/webp">
+                        </div>
+
+                        <div id="editor-workspace" style="display:none">
+                            <p id="editor-file-name" class="media-file-name"></p>
+                            <div class="editor-preview-wrap">
+                                <img id="editor-preview" alt="Picture preview">
+                                <span class="editor-preview-badge" id="editor-preview-badge" style="display:none"></span>
+                            </div>
+
+                            <div class="editor-section">
+                                <h3>Background</h3>
+                                <p class="editor-hint">Remove the background with remove.bg. Add your own API key in Settings. The result is a transparent PNG you can save anywhere.</p>
+                                <div class="field-row">
+                                    <button id="editor-remove-bg-btn">Remove background</button>
+                                </div>
+                            </div>
+
+                            <div class="editor-section">
+                                <h3>Quality</h3>
+                                <div class="editor-quality-row">
+                                    <label for="editor-quality">Quality</label>
+                                    <input type="range" id="editor-quality" min="10" max="100" value="70">
+                                    <span id="editor-quality-value">70%</span>
+                                </div>
+                                <div class="field-row">
+                                    <label>Output</label>
+                                    <select id="editor-format">
+                                        <option value="jpeg" selected>JPEG</option>
+                                        <option value="webp">WebP</option>
+                                    </select>
+                                    <button id="editor-compress-btn">Reduce quality</button>
+                                </div>
+                                <p class="editor-hint">Lower quality creates a smaller file. The result is previewed first, then you choose where to save it.</p>
+                            </div>
+
+                            <div class="media-status" id="editor-status" style="display:none">
+                                <div class="media-status-head">
+                                    <div class="loader" id="editor-loader"></div>
+                                    <div class="media-status-copy">
+                                        <p id="editor-status-text">Working...</p>
+                                        <p class="media-status-detail" id="editor-status-detail"></p>
+                                    </div>
+                                </div>
+                                <div class="save-result" id="editor-save-result" style="display:none">
+                                    <span class="save-result-path" id="editor-save-path"></span>
+                                    <button type="button" class="btn-small" id="editor-save-btn">Save image</button>
+                                    <button type="button" class="btn-small" id="editor-reveal-btn" style="display:none">Show in folder</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Color Tools Panel -->
+                <section id="panel-color" class="tool-panel">
+                    <div class="tool-container color-tool">
+                        <div class="color-main">
+                            <div class="color-sv-wrap">
+                                <canvas id="color-sv" width="280" height="190"></canvas>
+                                <span id="color-sv-cursor" class="color-sv-cursor"></span>
+                            </div>
+                            <div class="color-side">
+                                <div id="color-preview" class="color-preview"></div>
+                                <div class="color-hex-row">
+                                    <label for="color-hex-input">HEX</label>
+                                    <input type="text" id="color-hex-input" value="#3D8BFF" maxlength="7" spellcheck="false">
+                                    <button type="button" class="btn-small" id="color-copy-hex">Copy</button>
+                                </div>
+                                <p>RGB: <span id="color-rgb">rgb(61, 139, 255)</span></p>
+                                <p>HSL: <span id="color-hsl">hsl(217, 100%, 62%)</span></p>
+                                <button type="button" class="btn-small" id="color-copy-rgb">Copy RGB</button>
+                            </div>
+                        </div>
+                        <div class="color-hue-row">
+                            <label for="color-hue">Hue</label>
+                            <input type="range" id="color-hue" min="0" max="360" value="217">
+                        </div>
+                        <div class="input-group color-actions">
+                            <button id="color-pick-btn">Pick from Screen</button>
+                        </div>
+                        <p id="color-status" class="color-status"></p>
+                    </div>
+                </section>
+
+                <!-- Thumbnail Grabber Panel -->
+                <section id="panel-thumbnail" class="tool-panel">
+                    <div class="tool-container">
+                        <div class="field-row">
+                            <label>Video Link</label>
+                            <div class="input-with-clear">
+                                <input type="text" id="thumb-url" placeholder="Paste YouTube, Vimeo, or other video link...">
+                                <button type="button" class="clear-btn" data-clear="thumb-url" title="Clear link" aria-label="Clear link">×</button>
+                            </div>
+                            <button id="thumb-fetch-btn">Fetch</button>
+                        </div>
+                        <p id="thumb-status" class="thumb-status"></p>
+                        <div id="thumb-result-area" style="display:none">
+                            <div class="field-row">
+                                <label>Resolution</label>
+                                <select id="thumb-resolution" style="flex:1"></select>
+                                <button id="thumb-save-btn">Save</button>
+                            </div>
+                            <div class="thumb-preview">
+                                <img id="thumb-preview-img" alt="Selected thumbnail">
+                            </div>
+                            <p id="thumb-meta" class="thumb-meta"></p>
+                        </div>
+                        <div class="save-result" id="thumb-save-result" style="display:none">
+                            <span class="save-result-path" id="thumb-save-path"></span>
+                            <button type="button" class="btn-small" id="thumb-reveal-btn">Show in folder</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- OCR Panel -->
+                <section id="panel-ocr" class="tool-panel">
+                    <div class="tool-container">
+                        <div class="tool-section">
+                            <h3 style="margin-bottom: 16px; color: var(--text-dim); font-size: 14px;">Extract Text from Image</h3>
+                            <div class="drop-zone" id="ocr-drop-zone">
+                                <p>Drag & Drop an image here or click to select</p>
+                                <input type="file" id="ocr-input" hidden accept="image/*">
+                            </div>
+                            <div id="ocr-preview" style="margin: 16px 0; text-align: center;"></div>
+                            <p id="ocr-selected-name" style="font-size: 13px; color: var(--text-dim); margin-bottom: 12px;"></p>
+                            <div class="input-group" id="ocr-actions" style="display:none; flex-wrap: wrap;">
+                                <label style="width:auto">Languages</label>
+                                <select id="ocr-languages" multiple style="flex: 1; min-height: 80px;"></select>
+                            </div>
+                            <div class="field-row" id="ocr-run-row" style="display:none;">
+                                <button id="ocr-run-btn" style="flex: 1;">Run OCR</button>
+                                <button class="btn-small" id="ocr-clear-btn">Clear</button>
+                            </div>
+                            <p id="ocr-status" style="color: var(--text-dim); font-size: 13px; margin-top: 12px; text-align: center;"></p>
+                        </div>
+
+                        <div class="tool-section" style="margin-top: 24px;">
+                            <h3 style="margin-bottom: 12px; color: var(--text-dim); font-size: 14px;">Result</h3>
+                            <textarea id="ocr-result" style="width:100%; min-height:150px; font-family: monospace; font-size: 14px; padding: 12px; resize: vertical;" readonly></textarea>
+                            <div class="field-row" style="margin-top: 12px;">
+                                <button id="ocr-copy-btn" style="flex: 1;">Copy Text</button>
+                                <button id="ocr-save-btn" style="flex: 1;">Save as .txt</button>
+                                <button id="ocr-reveal-btn" class="btn-small" style="display:none">Show in folder</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PDF Toolkit Panel -->
+                <section id="panel-pdf" class="tool-panel">
+                    <div class="tool-container">
+                        <div class="pdf-tabs">
+                            <button class="pdf-tab active" data-tab="merge">Merge</button>
+                            <button class="pdf-tab" data-tab="split">Split</button>
+                            <button class="pdf-tab" data-tab="rotate">Rotate</button>
+                            <button class="pdf-tab" data-tab="img-to-pdf">Images to PDF</button>
+                            <button class="pdf-tab" data-tab="to-images">PDF to Images</button>
+                            <button class="pdf-tab" data-tab="compress">Compress</button>
+                        </div>
+
+                        <div class="save-result" id="pdf-save-result" style="display:none">
+                            <span class="save-result-path" id="pdf-save-path"></span>
+                            <button type="button" class="btn-small" id="pdf-reveal-btn">Show in folder</button>
+                        </div>
+
+                        <!-- Merge Panel -->
+                        <div id="pdf-panel-merge" class="pdf-panel active">
+                            <div class="drop-zone" id="pdf-drop-zone">
+                                <p>Drag & Drop PDF files here or click to select (2+ files)</p>
+                                <input type="file" id="pdf-input" hidden accept="application/pdf" multiple>
+                            </div>
+                            <div id="pdf-file-list" style="margin: 16px 0;"></div>
+                            <div class="field-row">
+                                <button id="pdf-merge-btn" data-label="Merge PDFs" disabled>Merge PDFs</button>
+                                <button class="btn-small" id="pdf-clear-btn" style="display:none">Clear</button>
+                            </div>
+                        </div>
+
+                        <!-- Split Panel -->
+                        <div id="pdf-panel-split" class="pdf-panel">
+                            <div class="drop-zone" id="pdf-split-drop-zone">
+                                <p>Drag & Drop a PDF file here or click to select</p>
+                                <input type="file" id="pdf-split-input" hidden accept="application/pdf">
+                            </div>
+                            <div id="pdf-split-file-list" style="margin: 16px 0;"></div>
+                            <div class="input-group">
+                                <label>Start Page</label>
+                                <input type="number" id="pdf-split-start" value="1" min="1" style="width: 100px;">
+                                <label>End Page (0 = last)</label>
+                                <input type="number" id="pdf-split-end" value="0" min="0" style="width: 100px;">
+                            </div>
+                            <div class="field-row">
+                                <button id="pdf-split-btn" data-label="Split PDF" disabled>Split PDF</button>
+                                <button class="btn-small" id="pdf-split-clear-btn">Clear</button>
+                            </div>
+                        </div>
+
+                        <!-- Rotate Panel -->
+                        <div id="pdf-panel-rotate" class="pdf-panel">
+                            <div class="drop-zone" id="pdf-rotate-drop-zone">
+                                <p>Drag & Drop a PDF file here or click to select</p>
+                                <input type="file" id="pdf-rotate-input" hidden accept="application/pdf">
+                            </div>
+                            <div id="pdf-rotate-file-list" style="margin: 16px 0;"></div>
+                            <div class="input-group">
+                                <label>Angle</label>
+                                <select id="pdf-rotate-angle">
+                                    <option value="90">90° Clockwise</option>
+                                    <option value="180">180°</option>
+                                    <option value="270">270° Clockwise (90° CCW)</option>
+                                </select>
+                            </div>
+                            <div class="field-row">
+                                <button id="pdf-rotate-btn" data-label="Rotate PDF" disabled>Rotate PDF</button>
+                                <button class="btn-small" id="pdf-rotate-clear-btn">Clear</button>
+                            </div>
+                        </div>
+
+                        <!-- Images to PDF Panel -->
+                        <div id="pdf-panel-img-to-pdf" class="pdf-panel">
+                            <div class="drop-zone" id="pdf-img-drop-zone">
+                                <p>Drag & Drop images here or click to select (JPG, PNG, WebP)</p>
+                                <input type="file" id="pdf-img-input" hidden accept="image/*" multiple>
+                            </div>
+                            <div id="pdf-img-file-list" style="margin: 16px 0;"></div>
+                            <div class="field-row">
+                                <button id="pdf-img-to-pdf-btn" data-label="Create PDF" disabled>Create PDF</button>
+                                <button class="btn-small" id="pdf-img-clear-btn" style="display:none">Clear</button>
+                            </div>
+                        </div>
+
+                        <!-- PDF to Images Panel -->
+                        <div id="pdf-panel-to-images" class="pdf-panel">
+                            <div class="drop-zone" id="pdf-to-images-drop-zone">
+                                <p>Drag & Drop a PDF file here or click to select</p>
+                                <input type="file" id="pdf-to-images-input" hidden accept="application/pdf">
+                            </div>
+                            <div id="pdf-to-images-file-list" style="margin: 16px 0;"></div>
+                            <div class="input-group">
+                                <label>DPI</label>
+                                <input type="number" id="pdf-to-images-dpi" value="150" min="72" max="600" style="width: 100px;">
+                                <label>Format</label>
+                                <select id="pdf-to-images-format">
+                                    <option value="png">PNG</option>
+                                    <option value="jpeg">JPEG</option>
+                                    <option value="webp">WebP</option>
+                                </select>
+                            </div>
+                            <div class="field-row">
+                                <button id="pdf-to-images-btn" data-label="Extract Images" disabled>Extract Images</button>
+                                <button class="btn-small" id="pdf-to-images-clear-btn">Clear</button>
+                            </div>
+                        </div>
+
+                        <!-- Compress Panel -->
+                        <div id="pdf-panel-compress" class="pdf-panel">
+                            <div class="drop-zone" id="pdf-compress-drop-zone">
+                                <p>Drag & Drop a PDF file here or click to select</p>
+                                <input type="file" id="pdf-compress-input" hidden accept="application/pdf">
+                            </div>
+                            <div id="pdf-compress-file-list" style="margin: 16px 0;"></div>
+                            <div class="input-group">
+                                <label>Method</label>
+                                <select id="pdf-compress-method">
+                                    <option value="optimize" selected>Optimize (lossless)</option>
+                                    <option value="rasterize">Rasterize (requires rendering)</option>
+                                </select>
+                            </div>
+                            <div class="input-group" id="compress-rasterize-options" style="display: none;">
+                                <label>DPI</label>
+                                <input type="number" id="pdf-compress-dpi" value="150" min="72" max="300" style="width: 100px;">
+                                <label>JPEG Quality</label>
+                                <input type="number" id="pdf-compress-quality" value="70" min="10" max="95" style="width: 100px;">
+                            </div>
+                            <div class="field-row">
+                                <button id="pdf-compress-btn" data-label="Compress PDF" disabled>Compress PDF</button>
+                                <button class="btn-small" id="pdf-compress-clear-btn">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- GIF Creator Panel -->
+                <section id="panel-gif" class="tool-panel">
+                    <div class="tool-container">
+                        <div class="drop-zone" id="gif-drop-zone">
+                            <p>Drag &amp; Drop a video here or click to select (MP4, WebM, MOV, MKV)</p>
+                            <input type="file" id="gif-input" hidden accept="video/*,.mkv,.avi,.mov,.webm">
+                        </div>
+
+                        <div id="gif-file-info" class="gif-file-info"></div>
+
+                        <div id="gif-settings" style="display:none;">
+                            <div class="gif-grid">
+                                <div class="gif-field">
+                                    <label>Start (s)</label>
+                                    <input type="number" id="gif-start" value="0" min="0" step="0.1">
+                                </div>
+                                <div class="gif-field">
+                                    <label>Duration (s)</label>
+                                    <input type="number" id="gif-duration" value="5" min="0.1" step="0.1">
+                                </div>
+                                <div class="gif-field">
+                                    <label>FPS</label>
+                                    <select id="gif-fps">
+                                        <option value="10">10</option>
+                                        <option value="15" selected>15</option>
+                                        <option value="20">20</option>
+                                        <option value="24">24</option>
+                                        <option value="30">30</option>
+                                    </select>
+                                </div>
+                                <div class="gif-field">
+                                    <label>Width (px)</label>
+                                    <input type="number" id="gif-width" value="480" min="64" max="1920" step="2">
+                                </div>
+                                <div class="gif-field">
+                                    <label>Speed</label>
+                                    <select id="gif-speed">
+                                        <option value="0.5">0.5x</option>
+                                        <option value="0.75">0.75x</option>
+                                        <option value="1" selected>1x</option>
+                                        <option value="1.5">1.5x</option>
+                                        <option value="2">2x</option>
+                                        <option value="3">3x</option>
+                                    </select>
+                                </div>
+                                <div class="gif-field">
+                                    <label>Loop</label>
+                                    <select id="gif-loop">
+                                        <option value="0" selected>Infinite</option>
+                                        <option value="-1">Play once</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="gif-check-row">
+                                <label class="gif-check"><input type="checkbox" id="gif-reverse"> Reverse</label>
+                                <label class="gif-check"><input type="checkbox" id="gif-crop-enable"> Crop</label>
+                            </div>
+
+                            <div class="gif-grid" id="gif-crop-options" style="display:none;">
+                                <div class="gif-field">
+                                    <label>X</label>
+                                    <input type="number" id="gif-crop-x" value="0" min="0">
+                                </div>
+                                <div class="gif-field">
+                                    <label>Y</label>
+                                    <input type="number" id="gif-crop-y" value="0" min="0">
+                                </div>
+                                <div class="gif-field">
+                                    <label>Width</label>
+                                    <input type="number" id="gif-crop-w" value="640" min="2">
+                                </div>
+                                <div class="gif-field">
+                                    <label>Height</label>
+                                    <input type="number" id="gif-crop-h" value="360" min="2">
+                                </div>
+                            </div>
+
+                            <div class="gif-grid">
+                                <div class="gif-field gif-field-wide">
+                                    <label>Text Overlay</label>
+                                    <input type="text" id="gif-text" placeholder="Optional caption...">
+                                </div>
+                                <div class="gif-field">
+                                    <label>Font Size</label>
+                                    <input type="number" id="gif-text-size" value="28" min="8" max="120">
+                                </div>
+                                <div class="gif-field">
+                                    <label>Position</label>
+                                    <select id="gif-text-pos">
+                                        <option value="top">Top</option>
+                                        <option value="center">Center</option>
+                                        <option value="bottom" selected>Bottom</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="field-row gif-actions">
+                                <button id="gif-create-btn" disabled>Create GIF</button>
+                                <button class="btn-small" id="gif-cancel-btn" style="display:none;">Cancel</button>
+                                <button class="btn-small" id="gif-clear-btn">Clear</button>
+                            </div>
+
+                            <div class="progress-container" id="gif-progress-box" style="display:none;">
+                                <div class="progress-bar"><div class="progress-fill" id="gif-progress-fill"></div></div>
+                                <p id="gif-status">Preparing...</p>
+                            </div>
+
+                            <div id="gif-result-preview" class="gif-result"></div>
+                            <div class="save-result" id="gif-save-result" style="display:none">
+                                <span class="save-result-path" id="gif-save-path"></span>
+                                <button type="button" class="btn-small" id="gif-reveal-btn">Show in folder</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Settings Panel -->
+                <section id="panel-settings" class="tool-panel">
+                    <div class="tool-container">
+                        <div class="settings-section">
+                            <h3>Files</h3>
+                            <div class="field-row folder-row">
+                                <label>Download folder</label>
+                                <span class="folder-path" id="settings-folder">...</span>
+                                <button type="button" class="btn-small" id="settings-folder-btn">Change</button>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3>Background removal</h3>
+                            <div class="field-row">
+                                <label for="settings-removebg-key">remove.bg key</label>
+                                <div class="input-with-clear">
+                                    <input type="password" id="settings-removebg-key" placeholder="Paste your remove.bg API key" autocomplete="off" spellcheck="false">
+                                    <button type="button" class="clear-btn" data-clear="settings-removebg-key" title="Clear key" aria-label="Clear key">×</button>
+                                </div>
+                            </div>
+                            <p class="settings-hint">Used by the Picture Editor. Get a free API key from
+                                <a href="#" class="settings-link" data-url="https://www.remove.bg/api">remove.bg</a>.
+                            </p>
+                        </div>
+
+                        <div class="field-row">
+                            <button id="settings-save-btn">Save settings</button>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3>Updates</h3>
+                            <p class="settings-hint">Multi-Tool version <span id="settings-version">1.0.0</span></p>
+                            <p class="settings-hint" id="settings-update-status">Updates are checked automatically when the app starts.</p>
+                            <div class="field-row">
+                                <button type="button" class="btn-small" id="settings-check-update-btn">Check for updates</button>
+                                <button type="button" class="btn-small" id="settings-install-update-btn" style="display:none">Restart &amp; install</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <script src="js/icons.js"></script>
+    <script src="js/tools/thumbnail.js"></script>
+    <script src="js/tools/editor.js"></script>
+    <script src="js/tools/converters.js"></script>
+    <script src="js/tools/ocr.js"></script>
+    <script src="js/tools/pdf.js"></script>
+    <script src="js/tools/gif.js"></script>
+    <script src="js/tools/calculator.js"></script>
+    <script src="js/tools/color.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

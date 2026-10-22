@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Downloaded by scripts/setup.js (yt-dlp + tesseract language data)
+resources/bin/
+resources/tessdata/
+
+# Editor / OS noise
+.vscode/
+.idea/
+*.log
+npm-debug.log*
+Thumbs.db
+.DS_Store
