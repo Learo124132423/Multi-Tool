@@ -55,6 +55,8 @@ The key is stored only on your own machine, in
 
 ## Build from source
 
+Requires Node.js 22.12 or newer (the CI uses Node 24) and Windows for packaging.
+
 ```bash
 npm install
 npm run setup      # downloads yt-dlp and the OCR language data
